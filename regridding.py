@@ -53,7 +53,7 @@ def regrid_fit(ds_grid, ds_data, roms_variable):
 
 
 def get_slices(steps: int, num: int):
-    samples = np.linspace(1, steps, num).astype(int)  # astype int rounds down
+    samples = np.linspace(0, steps, num).astype(int)  # astype int rounds down
     return itertools.pairwise(samples)
 
 
@@ -63,7 +63,6 @@ def clim_of800to160():
     roms_variables = fill_variables()
     time_steps = ds_of800_clim.dims['ocean_time']
     for var in roms_variables:
-        da = regrid_fit(ds_of160_grid, ds_of800_clim.isel(ocean_time=0), var)
         for i, time_slice in enumerate(get_slices(time_steps, 30)):
             da = xr.concat(
                 [da, regrid_fit(ds_of160_grid, ds_of800_clim.isel(ocean_time=slice(*time_slice)), var)],
@@ -72,7 +71,7 @@ def clim_of800to160():
             xr.Dataset({
                 var.name: da
             }).to_netcdf(
-                f'/cluster/projects/nn9297k/OF160/Clm/OF160_clm_{var.name}_{i}.nc'
+                f'/cluster/projects/nn9297k/OF160/Clm/{i:02d}_OF160_clm_{var.name}.nc'
                 )
 
 
