@@ -63,16 +63,12 @@ def clim_of800to160():
     roms_variables = fill_variables()
     time_steps = ds_of800_clim.dims['ocean_time']
     for var in roms_variables:
-        for i, time_slice in enumerate(get_slices(time_steps, 30)):
-            da = xr.concat(
-                [da, regrid_fit(ds_of160_grid, ds_of800_clim.isel(ocean_time=slice(*time_slice)), var)],
-                dim="ocean_time",
+        for i, time_slice in enumerate(get_slices(time_steps, 100)):
+            da = regrid_fit(ds_of160_grid, ds_of800_clim.isel(ocean_time=slice(*time_slice)), var)
+            xr.Dataset({var.name: da}).to_netcdf(
+                f'/cluster/projects/nn9297k/OF160/Clm/{i:03d}_OF160_clm_{var.name}.nc'
                 )
-            xr.Dataset({
-                var.name: da
-            }).to_netcdf(
-                f'/cluster/projects/nn9297k/OF160/Clm/{i:02d}_OF160_clm_{var.name}.nc'
-                )
+            print(f"Variable: {var.name} iteration {i:03d} saved")
 
 
 if __name__ == "__main__":
