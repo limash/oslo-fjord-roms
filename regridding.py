@@ -73,15 +73,14 @@ def f(ds_grid, ds_data, var):
             f'/cluster/projects/nn9297k/OF160/Clm/{i:03d}_OF160_clm_{var.name}.nc'
             )
         print(f"Variable: {var.name} iteration {i:03d} saved")
-        break
 
 
 if __name__ == "__main__":
-    ds_of160_grid = xr.open_dataset('/cluster/projects/nn9297k/OF160/Grid/OF160_grid_v1.nc')
-    ds_of800_clim = xr.open_dataset('/cluster/projects/nn9297k/OF800/data_clim/OF800_his_merged.nc')
     roms_variables = fill_variables()
 
     def wrapper(x):
+        ds_of160_grid = xr.open_dataset('/cluster/projects/nn9297k/OF160/Grid/OF160_grid_v1.nc')
+        ds_of800_clim = xr.open_dataset('/cluster/projects/nn9297k/OF800/data_clim/OF800_his_merged.nc')
         f(ds_of160_grid, ds_of800_clim, x)
 
     # lambda cannot be pickled (python3.10)
