@@ -38,6 +38,7 @@ def fill_variables():
     variables.append(RomsVariable("ubar", "lon_u", "lat_u", "eta_u", "xi_u", "mask_u"))
     variables.append(RomsVariable("v", "lon_v", "lat_v", "eta_v", "xi_v", "mask_v"))
     variables.append(RomsVariable("vbar", "lon_v", "lat_v", "eta_v", "xi_v", "mask_v"))
+    variables.append(RomsVariable("zeta", "lon_rho", "lat_rho", "eta_rho", "xi_rho", "mask_rho"))
     return variables
 
 
